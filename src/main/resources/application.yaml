@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: a1c-challenge-backend
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/a1c_challenge}
+    username: ${DB_USERNAME:a1c_app}
+    password: ${DB_PASSWORD:changeme}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      # Flyway owns the schema. Hibernate only validates that entities match it.
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+        format_sql: false
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: false
+    locations: classpath:db/migration
+
+server:
+  port: ${SERVER_PORT:8080}
+  tomcat:
+    # Privacy: never write an access log that could tie a token to a wall-clock time + IP.
+    accesslog:
+      enabled: false
+  forward-headers-strategy: native
+
+# Admin kill-switch secret. MUST be overridden in production via env var.
+admin:
+  secret: ${ADMIN_SECRET:local-dev-only-change-me}
+
+logging:
+  level:
+    root: INFO
+    com.a1cchallenge: INFO
+    # Never log SQL bind parameters — they may contain participant data.
+    org.hibernate.SQL: INFO
+    org.hibernate.orm.jdbc.bind: "OFF"
+    org.hibernate.type.descriptor.sql.BasicBinder: "OFF"
