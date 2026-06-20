@@ -10,8 +10,8 @@ spring:
 
   jpa:
     hibernate:
-      # Flyway owns the schema. Hibernate only validates that entities match it.
-      ddl-auto: validate
+      # Flyway owns the schema. Hibernate does not need to re-validate it.
+      ddl-auto: none
     open-in-view: false
     properties:
       hibernate:

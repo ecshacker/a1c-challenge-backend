@@ -1,4 +1,4 @@
-package com.a1cchallenge.entity;
+package org.a1cchallenge.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

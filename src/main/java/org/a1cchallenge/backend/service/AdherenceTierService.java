@@ -1,8 +1,8 @@
-package com.a1cchallenge.service;
+package org.a1cchallenge.backend.service;
 
-import com.a1cchallenge.entity.CheckInEntity;
-import com.a1cchallenge.repository.CheckInRepository;
-import com.a1cchallenge.repository.MilestoneRepository;
+import org.a1cchallenge.backend.entity.CheckInEntity;
+import org.a1cchallenge.backend.repository.CheckInRepository;
+import org.a1cchallenge.backend.repository.MilestoneRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

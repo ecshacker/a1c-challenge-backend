@@ -1,15 +1,15 @@
-package com.a1cchallenge.service;
+package org.a1cchallenge.backend.service;
 
-import com.a1cchallenge.dto.CheckInRequest;
-import com.a1cchallenge.dto.CheckInResponse;
-import com.a1cchallenge.dto.DraftCheckInRequest;
-import com.a1cchallenge.entity.CheckInEntity;
-import com.a1cchallenge.entity.DraftCheckInEntity;
-import com.a1cchallenge.entity.ParticipantEntity;
-import com.a1cchallenge.exception.TokenLostException;
-import com.a1cchallenge.repository.CheckInRepository;
-import com.a1cchallenge.repository.DraftCheckInRepository;
-import com.a1cchallenge.repository.ParticipantRepository;
+import org.a1cchallenge.backend.dto.CheckInRequest;
+import org.a1cchallenge.backend.dto.CheckInResponse;
+import org.a1cchallenge.backend.dto.DraftCheckInRequest;
+import org.a1cchallenge.backend.entity.CheckInEntity;
+import org.a1cchallenge.backend.entity.DraftCheckInEntity;
+import org.a1cchallenge.backend.entity.ParticipantEntity;
+import org.a1cchallenge.backend.exception.TokenLostException;
+import org.a1cchallenge.backend.repository.CheckInRepository;
+import org.a1cchallenge.backend.repository.DraftCheckInRepository;
+import org.a1cchallenge.backend.repository.ParticipantRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

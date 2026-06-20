@@ -1,8 +1,8 @@
-package com.a1cchallenge.controller;
+package org.a1cchallenge.backend.controller;
 
-import com.a1cchallenge.dto.MilestoneRequest;
-import com.a1cchallenge.dto.MilestoneResponse;
-import com.a1cchallenge.service.MilestoneService;
+import org.a1cchallenge.backend.dto.MilestoneRequest;
+import org.a1cchallenge.backend.dto.MilestoneResponse;
+import org.a1cchallenge.backend.service.MilestoneService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
-package com.a1cchallenge.dto;
+package org.a1cchallenge.backend.dto;
 
-import com.a1cchallenge.validation.ValidParticipantToken;
+import org.a1cchallenge.backend.validation.ValidParticipantToken;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;

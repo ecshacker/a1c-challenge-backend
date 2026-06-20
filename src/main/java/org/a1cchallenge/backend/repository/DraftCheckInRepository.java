@@ -1,6 +1,6 @@
-package com.a1cchallenge.repository;
+package org.a1cchallenge.backend.repository;
 
-import com.a1cchallenge.entity.DraftCheckInEntity;
+import org.a1cchallenge.backend.entity.DraftCheckInEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

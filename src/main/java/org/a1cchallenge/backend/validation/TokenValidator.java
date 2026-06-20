@@ -1,4 +1,4 @@
-package com.a1cchallenge.validation;
+package org.a1cchallenge.backend.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

@@ -1,4 +1,4 @@
-package com.a1cchallenge.exception;
+package org.a1cchallenge.backend.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +51,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(TokenLostException.class)
     public ResponseEntity<Map<String, Object>> handleTokenLost(TokenLostException ex) {
-        // The "Schrödinger's Token" reality: an unknown token is a 401, not a 500.
+        // The "SchrÃ¶dinger's Token" reality: an unknown token is a 401, not a 500.
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(Map.of("error", "TOKEN_LOST", "message", ex.getMessage())); // 401
     }

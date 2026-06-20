@@ -1,14 +1,14 @@
-package com.a1cchallenge.service;
+package org.a1cchallenge.backend.service;
 
-import com.a1cchallenge.dto.MilestoneRequest;
-import com.a1cchallenge.dto.MilestoneResponse;
-import com.a1cchallenge.entity.CheckInEntity;
-import com.a1cchallenge.entity.MilestoneEntity;
-import com.a1cchallenge.entity.ParticipantEntity;
-import com.a1cchallenge.exception.TokenLostException;
-import com.a1cchallenge.repository.CheckInRepository;
-import com.a1cchallenge.repository.MilestoneRepository;
-import com.a1cchallenge.repository.ParticipantRepository;
+import org.a1cchallenge.backend.dto.MilestoneRequest;
+import org.a1cchallenge.backend.dto.MilestoneResponse;
+import org.a1cchallenge.backend.entity.CheckInEntity;
+import org.a1cchallenge.backend.entity.MilestoneEntity;
+import org.a1cchallenge.backend.entity.ParticipantEntity;
+import org.a1cchallenge.backend.exception.TokenLostException;
+import org.a1cchallenge.backend.repository.CheckInRepository;
+import org.a1cchallenge.backend.repository.MilestoneRepository;
+import org.a1cchallenge.backend.repository.ParticipantRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

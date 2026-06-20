@@ -1,6 +1,6 @@
-package com.a1cchallenge.service;
+package org.a1cchallenge.backend.service;
 
-import com.a1cchallenge.dto.CheckInRequest;
+import org.a1cchallenge.backend.dto.CheckInRequest;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

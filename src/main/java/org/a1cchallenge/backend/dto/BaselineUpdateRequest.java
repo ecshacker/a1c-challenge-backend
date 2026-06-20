@@ -1,4 +1,4 @@
-package com.a1cchallenge.dto;
+package org.a1cchallenge.backend.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.Getter;

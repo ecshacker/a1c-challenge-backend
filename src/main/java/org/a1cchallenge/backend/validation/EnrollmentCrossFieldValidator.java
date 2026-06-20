@@ -1,6 +1,6 @@
-package com.a1cchallenge.validation;
+package org.a1cchallenge.backend.validation;
 
-import com.a1cchallenge.dto.EnrollmentRequest;
+import org.a1cchallenge.backend.dto.EnrollmentRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

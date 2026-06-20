@@ -1,6 +1,6 @@
-package com.a1cchallenge.repository;
+package org.a1cchallenge.backend.repository;
 
-import com.a1cchallenge.entity.AuditLogEntity;
+import org.a1cchallenge.backend.entity.AuditLogEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

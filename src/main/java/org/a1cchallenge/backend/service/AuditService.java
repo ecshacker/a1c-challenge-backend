@@ -1,7 +1,7 @@
-package com.a1cchallenge.service;
+package org.a1cchallenge.backend.service;
 
-import com.a1cchallenge.entity.AuditLogEntity;
-import com.a1cchallenge.repository.AuditLogRepository;
+import org.a1cchallenge.backend.entity.AuditLogEntity;
+import org.a1cchallenge.backend.repository.AuditLogRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

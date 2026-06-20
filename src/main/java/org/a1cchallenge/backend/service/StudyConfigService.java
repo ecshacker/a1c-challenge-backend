@@ -1,8 +1,8 @@
-package com.a1cchallenge.service;
+package org.a1cchallenge.backend.service;
 
-import com.a1cchallenge.entity.StudyConfig;
-import com.a1cchallenge.entity.StudyStatus;
-import com.a1cchallenge.repository.StudyConfigRepository;
+import org.a1cchallenge.backend.entity.StudyConfig;
+import org.a1cchallenge.backend.entity.StudyStatus;
+import org.a1cchallenge.backend.repository.StudyConfigRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

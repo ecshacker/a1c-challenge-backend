@@ -1,8 +1,8 @@
-package com.a1cchallenge.scheduled;
+package org.a1cchallenge.backend.scheduled;
 
-import com.a1cchallenge.entity.StudyConfig;
-import com.a1cchallenge.repository.DraftCheckInRepository;
-import com.a1cchallenge.service.StudyConfigService;
+import org.a1cchallenge.backend.entity.StudyConfig;
+import org.a1cchallenge.backend.repository.DraftCheckInRepository;
+import org.a1cchallenge.backend.service.StudyConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;

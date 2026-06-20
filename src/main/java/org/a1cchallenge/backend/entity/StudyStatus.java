@@ -1,4 +1,4 @@
-package com.a1cchallenge.entity;
+package org.a1cchallenge.backend.entity;
 
 /** Global study lifecycle state controlling the enrollment kill switch. */
 public enum StudyStatus {

@@ -1,7 +1,7 @@
-package com.a1cchallenge.controller;
+package org.a1cchallenge.backend.controller;
 
-import com.a1cchallenge.dto.*;
-import com.a1cchallenge.service.ParticipantService;
+import org.a1cchallenge.backend.dto.*;
+import org.a1cchallenge.backend.service.ParticipantService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

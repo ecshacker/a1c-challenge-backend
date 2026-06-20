@@ -1,10 +1,10 @@
-package com.a1cchallenge.controller;
+package org.a1cchallenge.backend.controller;
 
-import com.a1cchallenge.dto.CheckInRequest;
-import com.a1cchallenge.dto.CheckInResponse;
-import com.a1cchallenge.dto.DraftCheckInRequest;
-import com.a1cchallenge.service.CheckInService;
-import com.a1cchallenge.service.CheckInValidationService;
+import org.a1cchallenge.backend.dto.CheckInRequest;
+import org.a1cchallenge.backend.dto.CheckInResponse;
+import org.a1cchallenge.backend.dto.DraftCheckInRequest;
+import org.a1cchallenge.backend.service.CheckInService;
+import org.a1cchallenge.backend.service.CheckInValidationService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

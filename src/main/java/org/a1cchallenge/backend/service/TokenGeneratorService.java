@@ -1,4 +1,4 @@
-package com.a1cchallenge.service;
+package org.a1cchallenge.backend.service;
 
 import org.springframework.stereotype.Service;
 
