@@ -32,16 +32,31 @@ public class CheckInController {
         return ResponseEntity.ok(response);
     }
 
+    /** Section 5: retrieve draft for the current week, 404 if none exists. */
+    @GetMapping("/draft")
+    public ResponseEntity<?> getDraft(
+            @RequestHeader("X-Participant-Token") String token,
+            @RequestParam Integer studyWeek) {
+        return checkInService.getDraft(token, studyWeek)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     /** Section 5: transient draft storage for fill-as-you-go UX. */
     @PostMapping("/draft")
-    public ResponseEntity<String> saveDraft(@Valid @RequestBody DraftCheckInRequest request) {
+    public ResponseEntity<String> saveDraft(
+            @RequestHeader("X-Participant-Token") String token,
+            @Valid @RequestBody DraftCheckInRequest request) {
+        request.setToken(token);
         checkInService.saveDraft(request);
         return ResponseEntity.ok("Draft saved");
     }
 
     /** Optional explicit cleanup (e.g. user clicks "Discard"). */
     @DeleteMapping("/draft")
-    public ResponseEntity<String> discardDraft(@RequestParam String token, @RequestParam Integer studyWeek) {
+    public ResponseEntity<String> discardDraft(
+            @RequestHeader("X-Participant-Token") String token,
+            @RequestParam Integer studyWeek) {
         checkInService.discardDraft(token, studyWeek);
         return ResponseEntity.ok("Draft discarded");
     }

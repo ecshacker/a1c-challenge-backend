@@ -15,9 +15,7 @@ import java.util.Map;
 @Setter
 public class DraftCheckInRequest {
 
-    @ValidParticipantToken
-    @NotBlank
-    private String token;
+    private String token; // populated from X-Participant-Token header by controller
 
     @NotNull
     @Min(value = 1)
