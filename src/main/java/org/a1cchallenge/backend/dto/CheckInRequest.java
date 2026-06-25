@@ -12,8 +12,7 @@ import java.math.BigDecimal;
 public class CheckInRequest {
 
     @ValidParticipantToken
-    @NotBlank
-    private String token;
+    private String token; // populated from X-Participant-Token header by controller
 
     @NotNull
     @Min(value = 1, message = "Study week must be >= 1")
@@ -92,11 +91,9 @@ public class CheckInRequest {
     @Pattern(regexp = "^(lbs|kg)$")
     private String weightUnit;
 
-    @NotBlank
     @Pattern(regexp = "^(no_changes|dose_reduced|medication_stopped|new_med_added)$")
     private String medicationChange;
 
-    @NotBlank
     @Pattern(regexp = "^(no|yes_scheduled_visit|yes_lab_a1c|yes_other)$")
     private String standardCareContact;
 

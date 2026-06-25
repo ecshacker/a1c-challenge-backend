@@ -25,7 +25,10 @@ public class CheckInController {
 
     /** Section 7.2: 200 OK with warnings if soft-validation rules are tripped. */
     @PostMapping
-    public ResponseEntity<CheckInResponse> submitCheckIn(@Valid @RequestBody CheckInRequest request) {
+    public ResponseEntity<CheckInResponse> submitCheckIn(
+            @RequestHeader("X-Participant-Token") String token,
+            @Valid @RequestBody CheckInRequest request) {
+        request.setToken(token);
         List<String> warnings = validationService.validateSoftRules(request);
         CheckInResponse response = checkInService.processCheckIn(request);
         response.setWarnings(warnings);
