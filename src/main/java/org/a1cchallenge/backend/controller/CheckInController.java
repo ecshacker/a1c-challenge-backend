@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/checkins")
@@ -33,6 +34,14 @@ public class CheckInController {
         CheckInResponse response = checkInService.processCheckIn(request);
         response.setWarnings(warnings);
         return ResponseEntity.ok(response);
+    }
+
+    /** Returns the list of study week numbers already submitted by this participant. */
+    @GetMapping("/submitted-weeks")
+    public ResponseEntity<Map<String, List<Integer>>> getSubmittedWeeks(
+            @RequestHeader("X-Participant-Token") String token) {
+        List<Integer> weeks = checkInService.getSubmittedWeeks(token);
+        return ResponseEntity.ok(Map.of("submittedWeeks", weeks));
     }
 
     /** Section 5: retrieve draft for the current week, 404 if none exists. */

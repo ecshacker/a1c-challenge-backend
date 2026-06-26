@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -88,6 +89,10 @@ public class CheckInService {
 
         return new CheckInResponse("Check-in submitted successfully",
                 request.getStudyWeek(), complianceScore, weekCompliant);
+    }
+
+    public List<Integer> getSubmittedWeeks(String token) {
+        return checkInRepository.findStudyWeeksByToken(token);
     }
 
     public Optional<DraftCheckInEntity> getDraft(String token, Integer studyWeek) {
