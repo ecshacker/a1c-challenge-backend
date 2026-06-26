@@ -245,7 +245,7 @@ CREATE TABLE audit_log (
     event_type VARCHAR(30) NOT NULL CHECK (event_type IN ('enrollment', 'start_set', 'checkin_submit', 'draft_save', 'milestone_submit', 'token_lookup')),
     token_hash VARCHAR(64) NOT NULL,
     study_week SMALLINT,
-    event_week_offset SMALLINT NOT NULL CHECK (event_week_offset BETWEEN 1 AND 10),
+    event_week_offset SMALLINT NOT NULL CHECK (event_week_offset BETWEEN 1 AND 7),
     event_year_week VARCHAR(8) NOT NULL CHECK (event_year_week ~ '^[0-9]{4}-[0-9]{2}$'),
     anomaly_flag BOOLEAN NOT NULL DEFAULT FALSE
 );
