@@ -127,6 +127,10 @@ public class MilestoneService {
                 request.getStudyWeek(), deltaA1c, deltaA1cClinicallyMeaningful, adherenceTier);
     }
 
+    public List<Integer> getSubmittedMilestoneWeeks(String token) {
+        return milestoneRepository.findStudyWeeksByToken(token);
+    }
+
     /** Section 8.1: mean of all six wellbeing dimensions; null if any is missing. */
     private BigDecimal computeCecdComposite(Integer e, Integer m, Integer d, Integer s, Integer h, Integer p) {
         if (e == null || m == null || d == null || s == null || h == null || p == null) {

@@ -2,8 +2,11 @@ package org.a1cchallenge.backend.repository;
 
 import org.a1cchallenge.backend.entity.MilestoneEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -13,4 +16,7 @@ public interface MilestoneRepository extends JpaRepository<MilestoneEntity, UUID
     boolean existsByTokenAndStudyWeek(String token, Integer studyWeek);
 
     boolean existsByTokenAndStudyWeekAndMilestoneA1cIsNotNull(String token, Integer studyWeek);
+
+    @Query("SELECT m.studyWeek FROM MilestoneEntity m WHERE m.token = :token")
+    List<Integer> findStudyWeeksByToken(@Param("token") String token);
 }

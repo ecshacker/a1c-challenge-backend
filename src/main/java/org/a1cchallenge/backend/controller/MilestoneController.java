@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/milestones")
 public class MilestoneController {
@@ -22,5 +25,12 @@ public class MilestoneController {
     public ResponseEntity<MilestoneResponse> submitMilestone(@Valid @RequestBody MilestoneRequest request) {
         MilestoneResponse response = milestoneService.processMilestone(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<Map<String, List<Integer>>> getMilestoneStatus(
+            @RequestHeader("X-Participant-Token") String token) {
+        List<Integer> weeks = milestoneService.getSubmittedMilestoneWeeks(token);
+        return ResponseEntity.ok(Map.of("submittedMilestoneWeeks", weeks));
     }
 }
