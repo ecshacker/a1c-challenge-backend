@@ -127,6 +127,10 @@ public class CheckInService {
         return checkInRepository.findStudyWeeksByToken(token);
     }
 
+    public Optional<CheckInEntity> getCheckIn(String token, Integer studyWeek) {
+        return checkInRepository.findByTokenAndStudyWeek(token, studyWeek);
+    }
+
     public Optional<DraftCheckInEntity> getDraft(String token, Integer studyWeek) {
         return draftCheckInRepository.findByTokenAndStudyWeek(token, studyWeek);
     }

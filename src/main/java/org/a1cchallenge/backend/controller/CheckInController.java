@@ -36,6 +36,16 @@ public class CheckInController {
         return ResponseEntity.ok(response);
     }
 
+    /** Returns a previously submitted check-in so the UI can display it read-only. */
+    @GetMapping("/{studyWeek}")
+    public ResponseEntity<?> getCheckIn(
+            @RequestHeader("X-Participant-Token") String token,
+            @PathVariable Integer studyWeek) {
+        return checkInService.getCheckIn(token, studyWeek)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     /** Returns the list of study week numbers already submitted by this participant. */
     @GetMapping("/submitted-weeks")
     public ResponseEntity<Map<String, List<Integer>>> getSubmittedWeeks(
