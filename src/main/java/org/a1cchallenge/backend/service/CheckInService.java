@@ -16,10 +16,42 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class CheckInService {
+
+    private static final Logger log = LoggerFactory.getLogger(CheckInService.class);
+
+    // Mirror of frontend enum label → API value maps, used when promoting abandoned drafts
+    private static final Map<String, String> CANN_METHOD = Map.of(
+        "Juice / smoothie", "juice_smoothie",
+        "Eaten directly",   "eaten_directly",
+        "Cold infusion",    "cold_infusion",
+        "Mixed",            "mixed",
+        "None this week",   "none_this_week"
+    );
+    private static final Map<String, String> CANN_STRAIN = Map.of(
+        "Sativa", "sativa", "Indica", "indica", "Balanced", "balanced", "Not selected", "not_selected"
+    );
+    private static final Map<String, String> EX_DAYS = Map.of(
+        "Zero", "zero", "1–2 days", "1to2", "3–4 days", "3to4", "5+ days", "5plus"
+    );
+    private static final Map<String, String> EX_TYPE = Map.of(
+        "Aerobic", "aerobic", "Resistance", "resistance", "Walking", "walking", "Mixed", "mixed", "None", "none"
+    );
+    private static final Map<String, String> MED_CHANGE = Map.of(
+        "No changes", "no_changes", "Dose reduced", "dose_reduced",
+        "Medication stopped", "medication_stopped", "New med added", "new_med_added"
+    );
+    private static final Map<String, String> STD_CARE = Map.of(
+        "No", "no", "Scheduled visit", "yes_scheduled_visit",
+        "Lab A1C", "yes_lab_a1c", "Other", "yes_other"
+    );
 
     private static final BigDecimal COMPLIANT_THRESHOLD = new BigDecimal("0.800");
 
@@ -129,6 +161,129 @@ public class CheckInService {
             if (Boolean.TRUE.equals(b)) count++; // null and false contribute 0
         }
         return count;
+    }
+
+    @Transactional
+    public void promoteAbandonedDrafts(List<DraftCheckInEntity> drafts) {
+        for (DraftCheckInEntity draft : drafts) {
+            try {
+                if (checkInRepository.existsByTokenAndStudyWeek(draft.getToken(), draft.getStudyWeek())) {
+                    draftCheckInRepository.delete(draft);
+                    continue;
+                }
+
+                Map<String, Object> d = draft.getDraftData();
+                CheckInEntity c = new CheckInEntity();
+                c.setToken(draft.getToken());
+                c.setStudyWeek(draft.getStudyWeek());
+                c.setSubmittedAtDayOffset(14);
+
+                List<?> hemp = listOrNull(d.get("hemp"));
+                if (hemp != null && hemp.size() >= 7) {
+                    c.setHempDayMon(boolOrNull(hemp.get(0)));
+                    c.setHempDayTue(boolOrNull(hemp.get(1)));
+                    c.setHempDayWed(boolOrNull(hemp.get(2)));
+                    c.setHempDayThu(boolOrNull(hemp.get(3)));
+                    c.setHempDayFri(boolOrNull(hemp.get(4)));
+                    c.setHempDaySat(boolOrNull(hemp.get(5)));
+                    c.setHempDaySun(boolOrNull(hemp.get(6)));
+                }
+                c.setHempAmountG(decOrNull(d.get("hempAmt")));
+
+                List<?> cannabis = listOrNull(d.get("cannabis"));
+                if (cannabis != null && cannabis.size() >= 7) {
+                    c.setCannabisDayMon(boolOrNull(cannabis.get(0)));
+                    c.setCannabisDayTue(boolOrNull(cannabis.get(1)));
+                    c.setCannabisDayWed(boolOrNull(cannabis.get(2)));
+                    c.setCannabisDayThu(boolOrNull(cannabis.get(3)));
+                    c.setCannabisDayFri(boolOrNull(cannabis.get(4)));
+                    c.setCannabisDaySat(boolOrNull(cannabis.get(5)));
+                    c.setCannabisDaySun(boolOrNull(cannabis.get(6)));
+                }
+                c.setCannabisAmountG(decOrNull(d.get("cannAmt")));
+                c.setCannabisMethod(CANN_METHOD.get(strOrNull(d.get("cannMethod"))));
+                c.setCannabisStrainType(CANN_STRAIN.get(strOrNull(d.get("cannStrain"))));
+
+                c.setGlucoseUnit(strOrNull(d.get("glucoseUnit")));
+                List<?> gDays = listOrNull(d.get("glucoseDays"));
+                if (gDays != null && gDays.size() >= 7) {
+                    c.setGlucoseMon(decOrNull(gDays.get(0)));
+                    c.setGlucoseTue(decOrNull(gDays.get(1)));
+                    c.setGlucoseWed(decOrNull(gDays.get(2)));
+                    c.setGlucoseThu(decOrNull(gDays.get(3)));
+                    c.setGlucoseFri(decOrNull(gDays.get(4)));
+                    c.setGlucoseSat(decOrNull(gDays.get(5)));
+                    c.setGlucoseSun(decOrNull(gDays.get(6)));
+                }
+
+                c.setCgmTirPct(decOrNull(d.get("cgmTir")));
+                c.setCgmTarPct(decOrNull(d.get("cgmTar")));
+                c.setCgmTbrPct(decOrNull(d.get("cgmTbr")));
+                c.setCgmCvPct(decOrNull(d.get("cgmCv")));
+
+                c.setExerciseDays(EX_DAYS.get(strOrNull(d.get("exDays"))));
+                c.setExerciseTypeThisWeek(EX_TYPE.get(strOrNull(d.get("exType"))));
+
+                if (d.get("wb") instanceof Map<?, ?> wb) {
+                    c.setWbEnergy(intOrNull(wb.get("energy")));
+                    c.setWbMood(intOrNull(wb.get("mood")));
+                    c.setWbDigestion(intOrNull(wb.get("digestion")));
+                    c.setWbSleep(intOrNull(wb.get("sleep")));
+                    c.setWbHydration(intOrNull(wb.get("hydration")));
+                    c.setWbPain(intOrNull(wb.get("comfort")));
+                }
+
+                c.setWeightValue(decOrNull(d.get("weight")));
+                String rawUnit = strOrNull(d.get("unit"));
+                c.setWeightUnit("lb".equals(rawUnit) ? "lbs" : rawUnit);
+
+                c.setMedicationChange(MED_CHANGE.get(strOrNull(d.get("medChange"))));
+                c.setStandardCareContact(STD_CARE.get(strOrNull(d.get("stdCare"))));
+                c.setFreeTextNote(strOrNull(d.get("note")));
+
+                int hempCount = countTrue(c.getHempDayMon(), c.getHempDayTue(), c.getHempDayWed(),
+                        c.getHempDayThu(), c.getHempDayFri(), c.getHempDaySat(), c.getHempDaySun());
+                int cannCount = countTrue(c.getCannabisDayMon(), c.getCannabisDayTue(), c.getCannabisDayWed(),
+                        c.getCannabisDayThu(), c.getCannabisDayFri(), c.getCannabisDaySat(), c.getCannabisDaySun());
+                BigDecimal score = BigDecimal.valueOf(hempCount + cannCount)
+                        .divide(BigDecimal.valueOf(14), 3, RoundingMode.HALF_UP);
+                c.setHempDaysCount(hempCount);
+                c.setCannabisDaysCount(cannCount);
+                c.setCombinedComplianceScore(score);
+                c.setWeekCompliant(score.compareTo(COMPLIANT_THRESHOLD) >= 0);
+
+                checkInRepository.save(c);
+                draftCheckInRepository.delete(draft);
+                auditService.logEvent("checkin_auto_promoted", draft.getToken(), draft.getStudyWeek(), 14, false);
+                log.info("Auto-promoted draft to check-in: token={} week={}", draft.getToken(), draft.getStudyWeek());
+
+            } catch (Exception e) {
+                log.error("Failed to promote draft token={} week={}: {}", draft.getToken(), draft.getStudyWeek(), e.getMessage());
+            }
+        }
+    }
+
+    private static String strOrNull(Object o) {
+        return o instanceof String s && !s.isBlank() ? s : null;
+    }
+
+    private static Boolean boolOrNull(Object o) {
+        return o instanceof Boolean b ? b : null;
+    }
+
+    private static BigDecimal decOrNull(Object o) {
+        if (o == null) return null;
+        try { return new BigDecimal(o.toString()); } catch (Exception e) { return null; }
+    }
+
+    private static Integer intOrNull(Object o) {
+        if (o instanceof Integer i) return i;
+        if (o instanceof Number n) return n.intValue();
+        return null;
+    }
+
+    private static List<?> listOrNull(Object o) {
+        return o instanceof List<?> l ? l : null;
     }
 
     private void mapCheckInFields(CheckInRequest s, CheckInEntity c) {

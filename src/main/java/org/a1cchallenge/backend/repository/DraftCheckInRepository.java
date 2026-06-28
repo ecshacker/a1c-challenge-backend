@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,11 +22,8 @@ public interface DraftCheckInRepository extends JpaRepository<DraftCheckInEntity
     void deleteByTokenAndStudyWeek(@Param("token") String token, @Param("studyWeek") Integer studyWeek);
 
     /**
-     * Section 5 purge: delete drafts whose study_week ended more than ~14 days
-     * (2 study weeks) before the current global study week. The current global
-     * week is derived from study_config.launch_date in the calling job.
+     * Section 5 promotion: fetch all drafts whose window has closed so the
+     * cleanup job can promote them to submitted check-ins.
      */
-    @Modifying
-    @Query("DELETE FROM DraftCheckInEntity d WHERE d.studyWeek <= :purgeBeforeWeek")
-    int purgeDraftsBeforeWeek(@Param("purgeBeforeWeek") Integer purgeBeforeWeek);
+    List<DraftCheckInEntity> findAllByStudyWeekLessThanEqual(Integer studyWeek);
 }
